@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>User Registration</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f4f4;
+}
+
+.container{
+    width:350px;
+    margin:100px auto;
+    background:white;
+    padding:25px;
+    border-radius:8px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#45a049;
+}
+
+#message{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>User Registration</h2>
+
+<form id="registerForm">
+
+<input type="text" id="name" placeholder="Enter Name" required>
+
+<input type="email" id="email" placeholder="Enter Email" required>
+
+<input type="password" id="password" placeholder="Enter Password" required>
+
+<button type="submit">Register</button>
+
+</form>
+
+<p id="message"></p>
+
+</div>
+
+
+<script>
+
+document.getElementById("registerForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try{
+
+        const response = await fetch("http://localhost:5000/api/users/register", {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                name:name,
+                email:email,
+                password:password
+            })
+
+        });
+
+        const data = await response.json();
+
+        document.getElementById("message").innerText = data.message;
+
+        document.getElementById("registerForm").reset();
+
+    }
+    catch(error){
+
+        console.log("Error:",error);
+        document.getElementById("message").innerText="Server Error";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
